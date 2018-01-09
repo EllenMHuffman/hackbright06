@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
+from random import sample
 
 
 def open_and_read_file(file_path):
@@ -56,16 +57,41 @@ def make_chains(text_string):
         else:
             chains[markov_key] = [words[i+2]]
 
-    print chains
     return chains
 
 
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
 
-    # your code goes here
+    first_pair = choice(chains.keys())
+    words = list(first_pair)
+    print type(first_pair)
+
+    while True:
+
+        # allows you to go one loop at a time to debug
+        # import pdb; pdb.set_trace()
+        # second_word is a list
+        second_word = choice(chains[first_pair])
+
+        if second_word is None:
+            break
+
+        print second_word, first_pair
+
+        # break_point = chains.get(first_pair, 'break')
+        # print first_pair
+
+        # if break_point == 'break':
+        #     break
+
+        # words.append(first_pair[0])
+        # words.append(first_pair[1])
+        # print words
+        words.append(second_word)
+        print words
+        first_pair = (first_pair[1], second_word)
 
     return " ".join(words)
 
