@@ -66,31 +66,18 @@ def make_text(chains):
 
     first_pair = choice(chains.keys())
     words = list(first_pair)
-    print type(first_pair)
 
     while True:
 
-        # allows you to go one loop at a time to debug
+        # allows you to go one loop at a time to debug, n for next line
         # import pdb; pdb.set_trace()
-        # second_word is a list
+
         second_word = choice(chains[first_pair])
 
         if second_word is None:
             break
 
-        print second_word, first_pair
-
-        # break_point = chains.get(first_pair, 'break')
-        # print first_pair
-
-        # if break_point == 'break':
-        #     break
-
-        # words.append(first_pair[0])
-        # words.append(first_pair[1])
-        # print words
         words.append(second_word)
-        print words
         first_pair = (first_pair[1], second_word)
 
     return " ".join(words)
