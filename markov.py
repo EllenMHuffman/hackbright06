@@ -15,6 +15,8 @@ def open_and_read_file(file_path):
 
     return text
 
+# text_string = open_and_read_file('green-eggs.txt')
+# print make_chains(text_string)
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -44,11 +46,17 @@ def make_chains(text_string):
     chains = {}
 
     words = text_string.split()
-    for i in range(len(words) - 1):
+    words.append(None)
+    for i in range(len(words) - 2):
         markov_key = (words[i], words[i+1])
-        chains[markov_key] = None
-        i += 1
+      
+        if chains.get(markov_key):
+            # chains[markov_key] = chains[markov_key] + [words[i+2]]
+            chains[markov_key].append(words[i+2])
+        else:
+            chains[markov_key] = [words[i+2]]
 
+    print chains
     return chains
 
 
