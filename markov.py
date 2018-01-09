@@ -43,7 +43,11 @@ def make_chains(text_string):
 
     chains = {}
 
-    # your code goes here
+    words = text_string.split()
+    for i in range(len(words) - 1):
+        markov_key = (words[i], words[i+1])
+        chains[markov_key] = None
+        i += 1
 
     return chains
 
