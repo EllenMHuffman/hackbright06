@@ -3,6 +3,7 @@
 from sys import argv
 from random import choice
 from random import sample
+from string import ascii_uppercase
 
 
 def open_and_read_file(file_path):
@@ -70,8 +71,13 @@ def make_text(chains, n):
     """Return text from chains."""
 
 
-    first_ngram = choice(chains.keys())
-    # print first_ngram
+    sen_start_upper = []
+    for chain in chains.keys():
+        if chain[0][0] in ascii_uppercase:
+            sen_start_upper.append(chain)
+
+    first_ngram = choice(sen_start_upper)
+    print first_ngram
     words = list(first_ngram)
 
     while True:
