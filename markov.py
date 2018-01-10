@@ -85,6 +85,9 @@ def make_text(chains, n):
             break
 
         words.append(next_word)
+        
+        if next_word[-1] in '.!?-':
+            break
 
         first_ngram_list = list(first_ngram)
 
