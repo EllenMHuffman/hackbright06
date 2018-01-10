@@ -1,5 +1,6 @@
 """Generate Markov text from text files."""
 
+from sys import argv
 from random import choice
 from random import sample
 
@@ -19,7 +20,7 @@ def open_and_read_file(file_path):
 # text_string = open_and_read_file('green-eggs.txt')
 # print make_chains(text_string)
 
-def make_chains(text_string):
+def make_chains(text_string, n):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -48,50 +49,64 @@ def make_chains(text_string):
 
     words = text_string.split()
     words.append(None)
-    for i in range(len(words) - 2):
-        markov_key = (words[i], words[i+1])
+    for i in range(len(words) - n):
+        markov_key = tuple(words[i:i+n])
+        # print markov_key
+        # import pdb; pdb.set_trace()
       
         if chains.get(markov_key):
             # chains[markov_key] = chains[markov_key] + [words[i+2]]
-            chains[markov_key].append(words[i+2])
+            chains[markov_key].append(words[i+n])
         else:
-            chains[markov_key] = [words[i+2]]
+            chains[markov_key] = [words[i+n]]
+            # print chains
+    
+    # import pdb; pdb.set_trace()
 
     return chains
 
 
-def make_text(chains):
+def make_text(chains, n):
     """Return text from chains."""
 
 
-    first_pair = choice(chains.keys())
-    words = list(first_pair)
+    first_ngram = choice(chains.keys())
+    # print first_ngram
+    words = list(first_ngram)
 
     while True:
 
         # allows you to go one loop at a time to debug, n for next line
         # import pdb; pdb.set_trace()
 
-        second_word = choice(chains[first_pair])
+        next_word = choice(chains[first_ngram])
+        # print next_word
 
-        if second_word is None:
+        if next_word is None:
             break
 
-        words.append(second_word)
-        first_pair = (first_pair[1], second_word)
+        words.append(next_word)
+
+        first_ngram_list = list(first_ngram)
+        # print first_ngram_list
+        ngram_list = first_ngram_list[-(n-1):] 
+        ngram_list.append(next_word)
+        # print ngram_list
+        first_ngram = tuple(ngram_list)
+        # print first_ngram
 
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+input_path = argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_text, int(argv[2]))
 
 # Produce random text
-random_text = make_text(chains)
+random_text = make_text(chains, int(argv[2]))
 
 print random_text
