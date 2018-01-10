@@ -41,24 +41,29 @@ def clean_file(text):
             del text_words[start:stop + 1]
             # print 'NEW LOOP CYCLE CHECK HERE', text_words
 
-    print text_words
-
-    # for index in bracket_indices.keys():
-    #     print text_words[index:bracket_indices[index] + 1]
-    #     del text_words[index:bracket_indices[index] + 1]
+    return text_words
 
 
+def make_characters(text_words):
+    characters = set()
 
+    # if  and first three letters are allcaps:
+        # add to character set
 
-def make_characters(text_string):
-    characters = []
+    for word in text_words:
+        count = 0
+        for ch in word:
+            if ch in string.uppercase:
+                count += 1
+        if count > 3:
+            characters.add(word)
     
-    print words
+    print characters
 
 
 
 
-def make_chains(text_string, n):
+def make_chains(text_words, n):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -84,7 +89,7 @@ def make_chains(text_string, n):
     """
 
     chains = {}
-    words = text_string.split()
+    words = text_words.split()
     words.append(None)
 
     for i in range(len(words) - n):
