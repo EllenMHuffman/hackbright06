@@ -3,7 +3,8 @@
 from sys import argv
 from random import choice
 from random import sample
-from string import ascii_uppercase
+import string
+# import pdb; pdb.set_trace()
 
 
 def open_and_read_file(file_path):
@@ -47,46 +48,38 @@ def make_chains(text_string, n):
     """
 
     chains = {}
-
     words = text_string.split()
     words.append(None)
+
     for i in range(len(words) - n):
         markov_key = tuple(words[i:i+n])
-        # print markov_key
-        # import pdb; pdb.set_trace()
       
+        # Check to see if dictionary has key. If not, adds key.
         if chains.get(markov_key):
-            # chains[markov_key] = chains[markov_key] + [words[i+2]]
             chains[markov_key].append(words[i+n])
         else:
             chains[markov_key] = [words[i+n]]
-            # print chains
     
-    # import pdb; pdb.set_trace()
-
     return chains
 
 
 def make_text(chains, n):
     """Return text from chains."""
 
-
+    # Created a list with all keys that start a sentence (captial letter)
     sen_start_upper = []
     for chain in chains.keys():
-        if chain[0][0] in ascii_uppercase:
+        if chain[0][0] in string.ascii_uppercase:
             sen_start_upper.append(chain)
 
+    # Select first key from sentence starter list
     first_ngram = choice(sen_start_upper)
-    print first_ngram
+
     words = list(first_ngram)
 
     while True:
 
-        # allows you to go one loop at a time to debug, n for next line
-        # import pdb; pdb.set_trace()
-
         next_word = choice(chains[first_ngram])
-        # print next_word
 
         if next_word is None:
             break
@@ -94,15 +87,15 @@ def make_text(chains, n):
         words.append(next_word)
 
         first_ngram_list = list(first_ngram)
-        # print first_ngram_list
-        ngram_list = first_ngram_list[-(n-1):] 
+
+        # Slices previous ngram from second item to the end for next iteration
+        ngram_list = first_ngram_list[1:] 
         ngram_list.append(next_word)
-        # print ngram_list
+
+        # Converts the modified ngram to a tuple for the next iteration
         first_ngram = tuple(ngram_list)
-        # print first_ngram
 
     return " ".join(words)
-
 
 input_path = argv[1]
 
